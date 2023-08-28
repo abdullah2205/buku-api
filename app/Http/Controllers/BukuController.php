@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 
 class BukuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bukus = Buku::all();
+        $user = $request->user();
+        $bukus = $user->bukus;
+
         return response()->json(['data' => $bukus]);
     }
 }
