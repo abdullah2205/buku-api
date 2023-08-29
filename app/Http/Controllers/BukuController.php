@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Buku;
 
 use Illuminate\Http\Request;
 
@@ -12,6 +11,9 @@ class BukuController extends Controller
         $user = $request->user();
         $bukus = $user->bukus;
 
-        return response()->json(['data' => $bukus]);
+        return response()->json([
+            'pesan' => 'List Buku',
+            'data' => $bukus
+        ]);
     }
 }
