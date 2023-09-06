@@ -21,13 +21,11 @@ class BukuController extends Controller
     
     public function store(Request $request)
     {
-        // Validasi data yang diterima dari request
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string',
             'tahun' => 'required|string',
         ]);
 
-        // Jika validasi gagal, kirim pesan kesalahan
         if ($validator->fails()) {
             return response()->json([
                 'pesan' => 'Validasi gagal', 
@@ -35,7 +33,6 @@ class BukuController extends Controller
             ], 400);
         }
 
-        // Buat buku baru
         $user = $request->user();
         $buku = Buku::create([
             'judul' => $request->input('judul'),
@@ -43,10 +40,25 @@ class BukuController extends Controller
             'user_id' => $user->id, // Menyimpan ID user pemilik buku
         ]);
 
-        // Kirim respons dengan buku yang baru dibuat
         return response()->json([
-            'pesan' => 'Buku berhasil dibuat', 
+            'pesan' => 'Buku berhasil ditambah', 
             'data' => $buku
         ], 201);
+    }
+
+    public function show(string $id)
+    {
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            return response()->json([
+                'pesan' => 'Buku tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'pesan' => 'Data Buku',
+            'data' => $buku
+        ]);
     }
 }
