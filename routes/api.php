@@ -28,5 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/buku/store', [BukuController::class, 'store']);
 
+    // halo
+    
     Route::post('/logout', [AuthController::class, 'logout']);
 });
