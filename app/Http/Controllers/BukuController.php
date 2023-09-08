@@ -52,7 +52,7 @@ class BukuController extends Controller
         ], 201);
     }
 
-    public function show(string $id, Request $request)
+    public function show(Request $request, $id)
     {
         $user = $request->user();
         $bukus = $user->bukus->find($id);
@@ -67,5 +67,36 @@ class BukuController extends Controller
             'pesan' => 'Data Buku',
             'data' => $bukus
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required|string',
+            'tahun' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'pesan' => 'Validasi gagal', 
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $buku = Buku::findOrFail($id);
+        $buku->update([
+            'judul' => $request->input('judul'),
+            'tahun' => $request->input('tahun'),
+        ]);
+
+        return response()->json([
+            'pesan' => 'Buku berhasil diubah', 
+            'data' => $buku
+        ], 200);
+    }
+
+    public function destroy(string $id)
+    {
+        //
     }
 }

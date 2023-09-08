@@ -52,7 +52,7 @@ class AuthController extends Controller
         }
         
         else {
-            return response()->json(['message' => 'Gagal Login'], 401);
+            return response()->json(['pesan' => 'Gagal Login'], 401);
         }
     }
 
