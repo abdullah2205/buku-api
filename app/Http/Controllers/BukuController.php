@@ -13,6 +13,12 @@ class BukuController extends Controller
         $user = $request->user();
         $bukus = $user->bukus;
 
+        if ($bukus->isEmpty()) {
+            return response()->json([
+                'pesan' => 'Pengguna ini belum mempunyai buku'
+            ], 404);
+        }
+        
         return response()->json([
             'pesan' => 'List Buku',
             'data' => $bukus
@@ -46,11 +52,12 @@ class BukuController extends Controller
         ], 201);
     }
 
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
-        $buku = Buku::find($id);
+        $user = $request->user();
+        $bukus = $user->bukus->find($id);
 
-        if (!$buku) {
+        if (!$bukus) {
             return response()->json([
                 'pesan' => 'Buku tidak ditemukan'
             ], 404);
@@ -58,7 +65,7 @@ class BukuController extends Controller
 
         return response()->json([
             'pesan' => 'Data Buku',
-            'data' => $buku
+            'data' => $bukus
         ]);
     }
 }
