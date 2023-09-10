@@ -11,9 +11,9 @@ class BukuController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $bukus = $user->bukus;
+        $buku = $user->bukus;
 
-        if ($bukus->isEmpty()) {
+        if ($buku->isEmpty()) {
             return response()->json([
                 'pesan' => 'Pengguna ini belum mempunyai buku'
             ], 404);
@@ -21,7 +21,7 @@ class BukuController extends Controller
         
         return response()->json([
             'pesan' => 'List Buku',
-            'data' => $bukus
+            'data' => $buku
         ]);
     }
     
@@ -40,6 +40,7 @@ class BukuController extends Controller
         }
 
         $user = $request->user();
+
         $buku = Buku::create([
             'judul' => $request->input('judul'),
             'tahun' => $request->input('tahun'),
@@ -55,9 +56,9 @@ class BukuController extends Controller
     public function show(Request $request, $id)
     {
         $user = $request->user();
-        $bukus = $user->bukus->find($id);
+        $buku = $user->bukus->find($id);
 
-        if (!$bukus) {
+        if (!$buku) {
             return response()->json([
                 'pesan' => 'Buku tidak ditemukan'
             ], 404);
@@ -65,7 +66,7 @@ class BukuController extends Controller
 
         return response()->json([
             'pesan' => 'Data Buku',
-            'data' => $bukus
+            'data' => $buku
         ]);
     }
 
@@ -84,6 +85,13 @@ class BukuController extends Controller
         }
 
         $buku = Buku::find($id);
+
+        if (!$buku) {
+            return response()->json([
+                'pesan' => 'Buku tidak ditemukan'
+            ], 404);
+        }
+
         $buku->update([
             'judul' => $request->input('judul'),
             'tahun' => $request->input('tahun'),
@@ -98,19 +106,19 @@ class BukuController extends Controller
     public function destroy(Request $request, string $id)
     {
         $user = $request->user();
-        $bukus = $user->bukus->find($id);
+        $buku = $user->bukus->find($id);
 
-        if (!$bukus) {
+        if (!$buku) {
             return response()->json([
                 'pesan' => 'Buku tidak ditemukan'
             ], 404);
         }
 
         Buku::destroy($id);
+
         return response()->json([
             'pesan' => 'Buku berhasil dihapus', 
-            'data' => $bukus
+            'data' => $buku
         ], 200);
-
     }
 }
