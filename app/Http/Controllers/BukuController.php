@@ -83,7 +83,7 @@ class BukuController extends Controller
             ], 400);
         }
 
-        $buku = Buku::findOrFail($id);
+        $buku = Buku::find($id);
         $buku->update([
             'judul' => $request->input('judul'),
             'tahun' => $request->input('tahun'),
@@ -95,8 +95,22 @@ class BukuController extends Controller
         ], 200);
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $user = $request->user();
+        $bukus = $user->bukus->find($id);
+
+        if (!$bukus) {
+            return response()->json([
+                'pesan' => 'Buku tidak ditemukan'
+            ], 404);
+        }
+
+        Buku::destroy($id);
+        return response()->json([
+            'pesan' => 'Buku berhasil dihapus', 
+            'data' => $bukus
+        ], 200);
+
     }
 }

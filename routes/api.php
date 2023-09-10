@@ -32,5 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/buku/{id}', [BukuController::class, 'update']);
 
+    Route::delete('/buku/{id}', [BukuController::class, 'destroy']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
